@@ -59,11 +59,6 @@ function getCss(theme: string, fontSize: string) {
         padding: 0 5%;
     }
 
-    .temp {
-        color: red;
-        margin-left: 10px;
-    }
-
     .eggo {
         position: absolute;
         top: 30px;
@@ -181,11 +176,6 @@ export function getHtml(parsedReq: ParsedRequest, course: any) {
                       md
                         ? marked(instructor.full_name)
                         : sanitizeHtml(instructor.full_name)
-                    )}</div>
-                    <div class="temp">${emojify(
-                      md
-                        ? marked(adjustedFontSize)
-                        : sanitizeHtml(adjustedFontSize)
                     )}</div>
                 </div>
             </div>
