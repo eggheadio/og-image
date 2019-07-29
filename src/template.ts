@@ -23,7 +23,12 @@ function getCss(theme: string, fontSize: string) {
     background = "black"
     foreground = "white"
   }
+
   return `
+
+    * {
+        box-sizing: border-box;
+    }
 
     body {
         background: ${background};
@@ -51,6 +56,12 @@ function getCss(theme: string, fontSize: string) {
         align-items: center;
         font-family: system-ui, -apple-system, BlinkMacSystemFont;
         position: relative;
+        padding: 0 5%;
+    }
+
+    .temp {
+        color: red;
+        margin-left: 10px;
     }
 
     .eggo {
@@ -66,8 +77,7 @@ function getCss(theme: string, fontSize: string) {
         align-content: center;
         justify-content: center;
         justify-items: center;
-        width: 45%;
-        padding: 0 5%;
+        width: 40%;
     }
 
     .logo {
@@ -77,7 +87,7 @@ function getCss(theme: string, fontSize: string) {
 
     .info-holder {
         flex-grow: 1;
-        padding: 90px 5% 90px 0;
+        padding: 90px 0 90px 5%;
     }
 
     .divider {
@@ -91,7 +101,7 @@ function getCss(theme: string, fontSize: string) {
         display: flex;
         align-items: baseline;
         width: 100%;
-        font-size: 30px;
+        font-size: 32px;
         color: #63768d;
         font-weight: 300;
     }
@@ -132,6 +142,8 @@ export function getHtml(parsedReq: ParsedRequest, course: any) {
   const { square_cover_large_url, title, instructor } = course
   const images = [square_cover_large_url]
   const text = title
+  const adjustedFontSize =
+    text.length > 60 ? (text.length > 80 ? "52px" : "56px") : fontSize
 
   return `<!DOCTYPE html>
 <html>
@@ -139,7 +151,7 @@ export function getHtml(parsedReq: ParsedRequest, course: any) {
     <title>Generated Image</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
-        ${getCss(theme, fontSize)}
+        ${getCss(theme, adjustedFontSize)}
     </style>
     <body>
         <div class="wrapper">
@@ -169,6 +181,11 @@ export function getHtml(parsedReq: ParsedRequest, course: any) {
                       md
                         ? marked(instructor.full_name)
                         : sanitizeHtml(instructor.full_name)
+                    )}</div>
+                    <div class="temp">${emojify(
+                      md
+                        ? marked(adjustedFontSize)
+                        : sanitizeHtml(adjustedFontSize)
                     )}</div>
                 </div>
             </div>
