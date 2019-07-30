@@ -54,7 +54,7 @@ function getCss(theme: string, fontSize: string) {
         display: flex;
         justify-content: center;
         align-items: center;
-        font-family: system-ui, -apple-system, BlinkMacSystemFont;
+        font-family: 'Open Sans', system-ui, -apple-system, BlinkMacSystemFont;
         position: relative;
         padding: 0 5%;
     }
@@ -125,11 +125,11 @@ function getCss(theme: string, fontSize: string) {
     }
     
     .heading {
-        font-family: system-ui, -apple-system, BlinkMacSystemFont;
+        font-family: 'Open Sans', system-ui, -apple-system, BlinkMacSystemFont;
         font-size: ${fontSize};
         font-style: normal;
         font-weight: 500;
-        letter-spacing: 2px;
+        letter-spacing: 1.25px;
         color: ${foreground};
         line-height: 1.25;
         margin: 0;
