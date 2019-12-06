@@ -12,7 +12,7 @@ const eggheadLogoSrc = readFileSync(`${__dirname}/egghead-logo.svg`).toString(
 const eggheadLogo = 'data:image/svg+xml;base64,' + eggheadLogoSrc
 const eggoSrc = readFileSync(`${__dirname}/eggo.svg`).toString('base64')
 const eggo = 'data:image/svg+xml;base64,' + eggoSrc
-const rglr = readFileSync(`${__dirname}/fonts/Inter-Regular.woff2`).toString(
+const rglr = readFileSync(`${__dirname}/_fonts/Inter-Regular.woff2`).toString(
   'base64'
 )
 
