@@ -1,7 +1,6 @@
 import {readFileSync} from 'fs'
 import marked from 'marked'
 import {sanitizeHtml} from './sanitizer'
-const Vibrant = require('node-vibrant')
 const twemoji = require('twemoji')
 const twOptions = {folder: 'svg', ext: '.svg'}
 const emojify = (text: string) => twemoji.parse(text, twOptions)
@@ -10,8 +9,6 @@ const eggheadLogoSrc = readFileSync(`${__dirname}/egghead-logo.svg`).toString(
   'base64'
 )
 const eggheadLogo = 'data:image/svg+xml;base64,' + eggheadLogoSrc
-const eggoSrc = readFileSync(`${__dirname}/eggo.svg`).toString('base64')
-const eggo = 'data:image/svg+xml;base64,' + eggoSrc
 
 function getCss(theme: string, fontSize: string, palette: any) {
   const rglr = readFileSync(
@@ -55,12 +52,6 @@ function getCss(theme: string, fontSize: string, palette: any) {
         align-items: center;
         position: relative;
         padding: 0 3%;
-    }
-
-    .eggo {
-        position: absolute;
-        top: 30px;
-        right: 30px;
     }
 
     .egghead-logo {
@@ -165,15 +156,6 @@ export function getHtml(parsedReq: ParsedRequest, resource: any, palette: any) {
   const text = title || full_name
   const adjustedFontSize =
     text.length > 60 ? (text.length > 80 ? '36px' : '40px') : fontSize
-
-  /* 
-  const colors = Vibrant.from(square_cover_large_url)
-    .getPalette()
-    .then((palette: any) => {
-      // console.log('palette: ', palette)
-      return palette
-    })
-  */
 
   return `<!DOCTYPE html>
 <html>
