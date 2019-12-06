@@ -1,14 +1,19 @@
 import {readFileSync} from 'fs'
 import marked from 'marked'
 import {sanitizeHtml} from './sanitizer'
+const Vibrant = require('node-vibrant')
 const twemoji = require('twemoji')
 const twOptions = {folder: 'svg', ext: '.svg'}
 const emojify = (text: string) => twemoji.parse(text, twOptions)
 
+const eggheadLogoSrc = readFileSync(`${__dirname}/egghead-logo.svg`).toString(
+  'base64'
+)
+const eggheadLogo = 'data:image/svg+xml;base64,' + eggheadLogoSrc
 const eggoSrc = readFileSync(`${__dirname}/eggo.svg`).toString('base64')
 const eggo = 'data:image/svg+xml;base64,' + eggoSrc
 
-function getCss(theme: string, fontSize: string) {
+function getCss(theme: string, fontSize: string, palette: any) {
   let background = 'white'
   let foreground = 'black'
 
@@ -42,6 +47,7 @@ function getCss(theme: string, fontSize: string) {
     }
 
     .wrapper {
+        border-top: 25px solid rgb(${palette.Vibrant.rgb.toString()});
         width: 100%;
         height: 100%;
         display: flex;
@@ -58,6 +64,10 @@ function getCss(theme: string, fontSize: string) {
         right: 30px;
     }
 
+    .egghead-logo {
+        margin-bottom: 20px;
+    }
+
     .logo-holder {
         flex-shrink: 0;
         display: flex;
@@ -65,7 +75,7 @@ function getCss(theme: string, fontSize: string) {
         align-content: center;
         justify-content: center;
         justify-items: center;
-        width: 40%;
+        width: 38%;
     }
 
     .logo {
@@ -77,7 +87,7 @@ function getCss(theme: string, fontSize: string) {
     .info-holder {
         width: 100%;
         flex-grow: 1;
-        padding: 90px 3% 90px 5%;
+        padding: 90px 0 90px 3%;
     }
 
     .divider {
@@ -87,30 +97,38 @@ function getCss(theme: string, fontSize: string) {
         margin: 40px 0;
     }
 
-    .with-author-holder {
-        display: flex;
-        align-items: baseline;
-        width: 100%;
+    .metadata-holder {
         font-size: 28px;
-        letter-spacing: 1px;
+        display: flex;
+        align-items: center;
+        margin-top: 30px;
+    }
+
+    .metadata {
+        margin-left: 30px;
+    }
+
+    .author-holder {
+        display: flex;
+        align-items: center;
         color: #778FAC;
         font-weight: 300;
     }
 
-    .author-name {
+    .avatar {
         width: 100%;
-        margin-top: 30px;
-        margin-left: 10px;
-        color: #181421;
-        letter-spacing: 4px;
-        font-weight: 700;
-        text-transform: uppercase;
+        max-width: 60px;
+        height: 60px;
+        border-radius: 30px;
     }
 
-    .plus {
-        color: #BBB;
-        font-family: Times New Roman, Verdana;
-        font-size: 100px;
+    .author-name {
+        width: 100%;
+        margin-left: 20px;
+        color: #181421;
+        font-weight: 600;
+        /* letter-spacing: 4px; */
+        /* text-transform: uppercase; */
     }
 
     .emoji {
@@ -121,18 +139,20 @@ function getCss(theme: string, fontSize: string) {
     }
     
     .heading {
-        font-family: 'Open Sans', system-ui, -apple-system, BlinkMacSystemFont;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont;
+        /* font-family: 'Open Sans', system-ui, -apple-system, BlinkMacSystemFont; */
         font-size: ${fontSize};
         font-style: normal;
-        font-weight: 500;
-        letter-spacing: 1.25px;
+        font-weight: 600;
         color: ${foreground};
-        line-height: 1.25;
+        line-height: 1.1;
         margin: 0;
-    }`
+    }
+
+    `
 }
 
-export function getHtml(parsedReq: ParsedRequest, resource: any) {
+export function getHtml(parsedReq: ParsedRequest, resource: any, palette: any) {
   const {theme, md, fontSize, widths, heights, resourceType} = parsedReq
   // TODO: this should be able to handle any Resource (ContentModel)
   // which might mean we need to use a "convertToItem" style function?
@@ -141,12 +161,22 @@ export function getHtml(parsedReq: ParsedRequest, resource: any) {
     title,
     instructor,
     avatar_url,
-    full_name
+    full_name,
+    published_lesson_count
   } = resource
   const images = [square_cover_large_url || avatar_url]
   const text = title || full_name
   const adjustedFontSize =
-    text.length > 60 ? (text.length > 80 ? '52px' : '56px') : fontSize
+    text.length > 60 ? (text.length > 80 ? '36px' : '40px') : fontSize
+
+  /* 
+  const colors = Vibrant.from(square_cover_large_url)
+    .getPalette()
+    .then((palette: any) => {
+      // console.log('palette: ', palette)
+      return palette
+    })
+  */
 
   return `<!DOCTYPE html>
 <html>
@@ -154,11 +184,10 @@ export function getHtml(parsedReq: ParsedRequest, resource: any) {
     <title>Generated Image</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
-        ${getCss(theme, adjustedFontSize)}
+        ${getCss(theme, adjustedFontSize, palette)}
     </style>
     <body>
         <div class="wrapper">
-            ${getImage(eggo, '60', '60', 'eggo')}
             <div class="logo-holder">
                 ${images
                   .map(
@@ -169,14 +198,21 @@ export function getHtml(parsedReq: ParsedRequest, resource: any) {
                   .join('')}
             </div>
             <div class="info-holder">
+            ${getImage(eggheadLogo, '250', '62', 'egghead-logo')}
                 <div class="heading">${emojify(
                   md ? marked(text) : sanitizeHtml(text)
                 )}</div>
+                <div class="metadata-holder">
                 ${
                   instructor
                     ? `
-                <div class="with-author-holder">
-                    <div>with</div>
+                <div class="author-holder">
+                    ${getImage(
+                      instructor.avatar_128_url,
+                      '128',
+                      '128',
+                      'avatar'
+                    )}
                     <div class="author-name">${emojify(
                       md
                         ? marked(instructor.full_name)
@@ -186,6 +222,11 @@ export function getHtml(parsedReq: ParsedRequest, resource: any) {
                 `
                     : '<div class="author-name">egghead instructor</div>'
                 }
+                <div class="metadata">
+                ${published_lesson_count &&
+                  `${published_lesson_count} video lessons`}
+                </div>
+                </div>
             </div>
         </div>
     </body>

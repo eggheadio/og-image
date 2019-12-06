@@ -1,16 +1,13 @@
-import { IncomingMessage } from "http"
-import { parse } from "url"
+import {IncomingMessage} from 'http'
+import {parse} from 'url'
 import compact from 'lodash/compact'
 
 export function parseRequest(req: IncomingMessage) {
+  console.log(req.url, parse(req.url || '', true))
 
-  console.log(req.url, parse(req.url || "", true))
-
-
-  const { pathname = "/", query = {} } = parse(req.url || "", true)
-  const { fontSize, images, widths, heights, theme, md } = query
+  const {pathname = '/', query = {}} = parse(req.url || '', true)
+  const {fontSize, images, widths, heights, theme, md} = query
   let [type, slug] = compact(pathname.split('/'))
-
 
   if (type && !slug) {
     slug = type
@@ -18,32 +15,32 @@ export function parseRequest(req: IncomingMessage) {
   }
 
   if (Array.isArray(fontSize)) {
-    throw new Error("Expected a single fontSize")
+    throw new Error('Expected a single fontSize')
   }
   if (Array.isArray(theme)) {
-    throw new Error("Expected a single theme")
+    throw new Error('Expected a single theme')
   }
 
-  const arr = slug.split(".")
+  const arr = slug.split('.')
 
-  let extension = ""
-  let text = ""
+  let extension = ''
+  let text = ''
   if (arr.length === 0) {
-    text = ""
+    text = ''
   } else if (arr.length === 1) {
     text = arr[0]
   } else {
     extension = arr.pop() as string
-    text = arr.join(".")
+    text = arr.join('.')
   }
   console.log(text, slug, type, extension)
   const parsedRequest: ParsedRequest = {
     resourceType: type,
-    fileType: extension === "jpeg" ? extension : "png",
+    fileType: extension === 'jpeg' ? extension : 'png',
     text: decodeURIComponent(text),
-    theme: theme === "dark" ? "dark" : "light",
-    md: md === "1" || md === "true",
-    fontSize: fontSize || "60px",
+    theme: theme === 'dark' ? 'dark' : 'light',
+    md: md === '1' || md === 'true',
+    fontSize: fontSize || '54px',
     images: getArray(images),
     widths: getArray(widths),
     heights: getArray(heights)
@@ -64,12 +61,12 @@ function getDefaultImages(images: string[], theme: Theme): string[] {
     images.length > 0 &&
     images[0] &&
     images[0].startsWith(
-      "https://assets.zeit.co/image/upload/front/assets/design/"
+      'https://assets.zeit.co/image/upload/front/assets/design/'
     )
   ) {
     return images
   }
-  return theme === "light"
-    ? ["https://assets.zeit.co/image/upload/front/assets/design/now-black.svg"]
-    : ["https://assets.zeit.co/image/upload/front/assets/design/now-white.svg"]
+  return theme === 'light'
+    ? ['https://assets.zeit.co/image/upload/front/assets/design/now-black.svg']
+    : ['https://assets.zeit.co/image/upload/front/assets/design/now-white.svg']
 }
