@@ -12,11 +12,12 @@ const eggheadLogoSrc = readFileSync(`${__dirname}/egghead-logo.svg`).toString(
 const eggheadLogo = 'data:image/svg+xml;base64,' + eggheadLogoSrc
 const eggoSrc = readFileSync(`${__dirname}/eggo.svg`).toString('base64')
 const eggo = 'data:image/svg+xml;base64,' + eggoSrc
-const rglr = readFileSync(`${__dirname}/_fonts/Inter-Regular.woff2`).toString(
-  'base64'
-)
 
 function getCss(theme: string, fontSize: string, palette: any) {
+  const rglr = readFileSync(
+    `${__dirname}/../_fonts/Inter-Regular.woff2`
+  ).toString('base64')
+
   let background = 'white'
   let foreground = 'black'
 
@@ -42,18 +43,7 @@ function getCss(theme: string, fontSize: string, palette: any) {
         height: 100vh;
         margin: 0;
         padding: 0;
-        font-family: 'Inter', sans-serif;
-    }
-
-    code {
-        color: #D400FF;
-        font-family: 'Vera';
-        white-space: pre-wrap;
-        letter-spacing: -5px;
-    }
-
-    code:before, code:after {
-        content: '\`';
+        font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont;
     }
 
     .wrapper {
@@ -63,7 +53,6 @@ function getCss(theme: string, fontSize: string, palette: any) {
         display: flex;
         justify-content: center;
         align-items: center;
-        font-family: 'Inter', 'Open Sans', system-ui, -apple-system, BlinkMacSystemFont;
         position: relative;
         padding: 0 3%;
     }
@@ -149,8 +138,6 @@ function getCss(theme: string, fontSize: string, palette: any) {
     }
     
     .heading {
-        font-family: system-ui, -apple-system, BlinkMacSystemFont;
-        /* font-family: 'Open Sans', system-ui, -apple-system, BlinkMacSystemFont; */
         font-size: ${fontSize};
         font-style: normal;
         font-weight: 600;

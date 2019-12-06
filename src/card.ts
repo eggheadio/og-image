@@ -25,6 +25,7 @@ export default async function handler(
       resource.square_cover_large_url
     ).getPalette((err: string, palette: object) => palette)
     console.log(palette)
+
     const html = getHtml(parsedReq, resource, palette)
     if (isHtmlDebug) {
       res.setHeader('Content-Type', 'text/html')
