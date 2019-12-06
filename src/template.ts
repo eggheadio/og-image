@@ -49,7 +49,7 @@ function getCss(theme: string, fontSize: string) {
         align-items: center;
         font-family: 'Open Sans', system-ui, -apple-system, BlinkMacSystemFont;
         position: relative;
-        padding: 0 5%;
+        padding: 0 3%;
     }
 
     .eggo {
@@ -65,7 +65,7 @@ function getCss(theme: string, fontSize: string) {
         align-content: center;
         justify-content: center;
         justify-items: center;
-        width: 50%;
+        width: 40%;
     }
 
     .logo {
@@ -75,12 +75,13 @@ function getCss(theme: string, fontSize: string) {
     }
 
     .info-holder {
+        width: 100%;
         flex-grow: 1;
-        padding: 90px 0 90px 5%;
+        padding: 90px 3% 90px 5%;
     }
 
     .divider {
-        width: 60%;
+        width: 80%;
         height: 2px;
         background: #EFB548;
         margin: 40px 0;
@@ -97,6 +98,8 @@ function getCss(theme: string, fontSize: string) {
     }
 
     .author-name {
+        width: 100%;
+        margin-top: 30px;
         margin-left: 10px;
         color: #181421;
         letter-spacing: 4px;
@@ -133,10 +136,17 @@ export function getHtml(parsedReq: ParsedRequest, resource: any) {
   const {theme, md, fontSize, widths, heights, resourceType} = parsedReq
   // TODO: this should be able to handle any Resource (ContentModel)
   // which might mean we need to use a "convertToItem" style function?
-  const {square_cover_large_url, title, instructor, avatar_url, full_name} = resource
+  const {
+    square_cover_large_url,
+    title,
+    instructor,
+    avatar_url,
+    full_name
+  } = resource
   const images = [square_cover_large_url || avatar_url]
   const text = title || full_name
-  const adjustedFontSize = text.length > 60 ? (text.length > 80 ? '52px' : '56px') : fontSize
+  const adjustedFontSize =
+    text.length > 60 ? (text.length > 80 ? '52px' : '56px') : fontSize
 
   return `<!DOCTYPE html>
 <html>
@@ -150,19 +160,27 @@ export function getHtml(parsedReq: ParsedRequest, resource: any) {
         <div class="wrapper">
             ${getImage(eggo, '60', '60', 'eggo')}
             <div class="logo-holder">
-                ${images.map((img, i) => getPlusSign(i) + getImage(img, widths[i], heights[i], 'logo')).join('')}
+                ${images
+                  .map(
+                    (img, i) =>
+                      getPlusSign(i) +
+                      getImage(img, widths[i], heights[i], 'logo')
+                  )
+                  .join('')}
             </div>
             <div class="info-holder">
-                <div class="heading">${emojify(md ? marked(text) : sanitizeHtml(text))}</div>
+                <div class="heading">${emojify(
+                  md ? marked(text) : sanitizeHtml(text)
+                )}</div>
                 ${
                   instructor
                     ? `
-                <div class="divider" />
-                
                 <div class="with-author-holder">
                     <div>with</div>
                     <div class="author-name">${emojify(
-                      md ? marked(instructor.full_name) : sanitizeHtml(instructor.full_name),
+                      md
+                        ? marked(instructor.full_name)
+                        : sanitizeHtml(instructor.full_name)
                     )}</div>
                 </div>
                 `
@@ -174,7 +192,12 @@ export function getHtml(parsedReq: ParsedRequest, resource: any) {
 </html>`
 }
 
-function getImage(src: string, width = '500', height = 'auto', className: string) {
+function getImage(
+  src: string,
+  width = '500',
+  height = 'auto',
+  className: string
+) {
   return `<img
         class="${className}"
         alt="Generated Image"
