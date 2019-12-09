@@ -125,8 +125,9 @@ function getCss(theme: string, fontSize: string, palette: any) {
     
     .heading {
         font-size: ${fontSize};
-        font-style: normal;
         color: ${foreground};
+        font-weight: 600;
+        font-style: normal;
         line-height: 1.2;
         margin: 0;
     }
