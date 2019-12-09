@@ -146,7 +146,7 @@ export function getHtml(parsedReq: ParsedRequest, resource: any, palette: any) {
     instructor,
     avatar_url,
     full_name,
-    published_lesson_count
+    published_lesson_count,
   } = resource
   const images = [square_cover_large_url || avatar_url]
   const text = title || full_name
@@ -197,10 +197,8 @@ export function getHtml(parsedReq: ParsedRequest, resource: any, palette: any) {
                 `
                     : '<div class="author-name">egghead instructor</div>'
                 }
-                <div class="metadata">
-                ${published_lesson_count &&
-                  `${published_lesson_count} video lessons`}
-                </div>
+                ${published_lesson_count !== null &&
+                  `<div class="metadata">${published_lesson_count} video lessons</div>`}
                 </div>
             </div>
         </div>
