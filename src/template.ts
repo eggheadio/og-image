@@ -114,7 +114,7 @@ function getCss(theme: string, fontSize: string, palette: any) {
         width: 100%;
         margin-left: 16px;
         color: #181421;
-        font-weight: 500;
+        font-weight: 600;
     }
 
     .emoji {
