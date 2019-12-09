@@ -87,8 +87,8 @@ function getCss(theme: string, fontSize: string, palette: any) {
         margin: 40px 0;
     }
 
-    .metadata-holder {
-        font-size: 28px;
+    .byline-holder {
+        font-size: 30px;
         display: flex;
         align-items: center;
         margin-top: 30px;
@@ -101,24 +101,19 @@ function getCss(theme: string, fontSize: string, palette: any) {
     .author-holder {
         display: flex;
         align-items: center;
-        color: #778FAC;
-        font-weight: 300;
     }
 
     .avatar {
         width: 100%;
-        max-width: 60px;
-        height: 60px;
-        border-radius: 30px;
+        max-width: 64px;
+        height: 64px;
+        border-radius: 32px;
     }
 
     .author-name {
         width: 100%;
         margin-left: 16px;
         color: #181421;
-        font-weight: 600;
-        /* letter-spacing: 4px; */
-        /* text-transform: uppercase; */
     }
 
     .emoji {
@@ -131,9 +126,8 @@ function getCss(theme: string, fontSize: string, palette: any) {
     .heading {
         font-size: ${fontSize};
         font-style: normal;
-        font-weight: 600;
         color: ${foreground};
-        line-height: 1.1;
+        line-height: 1.2;
         margin: 0;
     }
 
@@ -155,7 +149,7 @@ export function getHtml(parsedReq: ParsedRequest, resource: any, palette: any) {
   const images = [square_cover_large_url || avatar_url]
   const text = title || full_name
   const adjustedFontSize =
-    text.length > 60 ? (text.length > 80 ? '36px' : '40px') : fontSize
+    text.length > 60 ? (text.length > 80 ? '40px' : '44px') : fontSize // 54px
 
   return `<!DOCTYPE html>
 <html>
@@ -181,7 +175,7 @@ export function getHtml(parsedReq: ParsedRequest, resource: any, palette: any) {
                 <div class="heading">${emojify(
                   md ? marked(text) : sanitizeHtml(text)
                 )}</div>
-                <div class="metadata-holder">
+                <div class="byline-holder">
                 ${
                   instructor
                     ? `
