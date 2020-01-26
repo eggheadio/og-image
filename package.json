@@ -4,7 +4,7 @@
   "description": "Generate an open graph image for twitter/facebook/etc",
   "main": "dist/card.js",
   "engines": {
-    "node": "8.10.x"
+    "node": "8.16.x"
   },
   "scripts": {
     "build": "tsc",
@@ -13,18 +13,19 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@types/lodash": "4.14.136",
-    "axios": "0.19.0",
-    "chrome-aws-lambda": "1.11.1",
+    "@types/lodash": "4.14.149",
+    "@types/puppeteer": "2.0.0",
+    "axios": "0.19.2",
+    "chrome-aws-lambda": "2.0.2",
     "lodash": "4.17.15",
     "marked": "0.6.1",
     "node-vibrant": "3.1.5",
-    "puppeteer-core": "1.11.0",
-    "twemoji": "11.3.0"
+    "puppeteer-core": "2.0.0",
+    "twemoji": "12.1.4"
   },
   "devDependencies": {
-    "@types/marked": "0.6.1",
-    "@types/puppeteer-core": "1.9.0",
-    "typescript": "3.3.3333"
+    "@types/marked": "0.7.2",
+    "@types/puppeteer-core": "2.0.0",
+    "typescript": "3.7.5"
   }
 }
